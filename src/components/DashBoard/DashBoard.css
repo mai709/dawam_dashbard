@@ -1,0 +1,35 @@
+.item--bg-wait{
+    background-color: #fff3cd;
+}
+.item--bg-done {
+    background-color: #d1e7dd;
+}
+.item--bg-reject{
+    background-color: #f8d7da;
+}
+.list-group .list-group-item div{
+border-left: 1px solid rgba(0 , 0  , 0, 0.13);
+    text-align: center;
+    width: 100%;
+}
+.list-group .list-group-item div:last-child{
+    border: 0;
+}
+.list-group .list-group-item a{
+    display: block;
+    width: 100%;
+}
+.btn--edit{
+    background-color: rgba(216, 172, 100,0.8);
+}
+.btn--edit:hover{
+    background-color: #d8ac64;
+}
+.btn--view{
+    background-color: rgba(32, 96, 106,0.85);
+    color: white;
+}
+.btn--view:hover{
+    background-color: rgb(32, 96, 106);
+        color: white;
+}

@@ -1,0 +1,26 @@
+.form-control:focus~label{
+    transform: scale(.85) translateY(-0.5rem) translateX(3.15rem) !important;
+}
+.input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.input-group>:not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+    margin-left: -1px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+@media screen and (min-width: 320px) and (max-width: 768px){
+    .data-waqaf .form-floating {
+        width: 100% !important;
+    }
+    .container{
+        width: 90%;
+    }
+}
+@media screen and (min-width: 1440px){
+    .form-control:focus~label {
+            transform: scale(.85) translateY(-0.5rem) translateX(7rem) !important;
+        }
+        
+}

@@ -1,29 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react'
 import "./AddWaqf.css";
 import { useFormik } from "formik";
 import axios from "axios";
 
 export default function AddWaqf() {
+  const [countries, setCountries] = useState([])
+  const [idCountry, setidCountry] = useState(undefined)
+  async function getApi() {
+    let { data } = await axios.get(`http://afdinc-001-site5.itempurl.com/api/Country`)
+    setCountries(data);
+    // console.log(data)
+  }
+  function changeValue(value){
+    setidCountry(value)
+    console.log(idCountry)
+  }
+  useEffect(() => {
+    getApi()
+  }, [])
   // const [apiError, setapiError] = useState("");
   // const [loading, setloading] = useState(false);
   async function apiReq(values) {
-    
+
     // setloading(true);
     let { data } = await axios.post(`http://afdinc-001-site5.itempurl.com/api/Waqf`, values)
       .catch((err) => {
-        console.log(err)
-        // setapiError(err.response.data.message);
-        // setapiError();
-        // ` ${err.response.data.errors.param} : ${err.response.data.errors.msg}`
-        // setloading(false);
-        // console.log(err)
       });
     if (data.status === 200) {
       // setloading(false);
       console.log('وصلت')
-      
     }
-    console.log(data)
+    // console.log(data)
   }
   let formik = useFormik({
     initialValues: {
@@ -33,9 +40,9 @@ export default function AddWaqf() {
       EstablishmentDate: "03-02-2000",
       EstablishmentDateH: "01-01-1444",
       WaqfDescription: "ksalsm",
-      WaqfCountryId: 1,
-      WaqfCityId: 1,
-      WaqfTypeId:1,
+      WaqfCountryId: idCountry,
+      WaqfCityId: undefined,
+      WaqfTypeId: 1,
       WaqfActivityId: 1,
       WaqfImage: null,
       WaqfDocument: null,
@@ -48,10 +55,11 @@ export default function AddWaqf() {
     <form onSubmit={formik.handleSubmit}>
       <div className="container">
         <p className="h1 text-center">بيانات حول الوقف</p>
+        {/* names */}
         <div className="d-md-flex data-waqaf">
           <div className="form-floating my-3 ms-3 w-50">
             <input
-            value={formik.values.FounderName} onChange={formik.handleChange} onBlur={formik.handleBlur}
+              value={formik.values.FounderName} onChange={formik.handleChange} onBlur={formik.handleBlur}
               type="name"
               className="form-control"
               id="FounderName"
@@ -69,10 +77,37 @@ export default function AddWaqf() {
             <label htmlFor="WaqfName">اسم الوقف</label>
           </div>
         </div>
+        {/* date */}
+        <div className="d-flex">
+          <div className='w-50'>
+            <label htmlFor="DateM">التاريخ الميلادي للوقف</label>
+            <input type="date" id='DateM'
+              value={formik.values.EstablishmentDate} onChange={formik.handleChange} onBlur={formik.handleBlur} />
+          </div>
+          <div className='w-50 me-5'>
+            <label htmlFor="DateH">التاريخ الهجري للوقف</label>
+            <input type="date" id='DateH'
+              value={formik.values.EstablishmentDateH} onChange={formik.handleChange} onBlur={formik.handleBlur} />
+          </div>
+        </div>
+        {/* countries and cities */}
+        <div className='d-flex'>
+          <select className="form-select" aria-label="Default select example" value={formik.values.WaqfCountryId} onChange={()=>{changeValue(formik.values.WaqfCountryId)}} onBlur={formik.handleBlur}>
+            <option value={undefined}>select option</option>
+            {countries.map((country) => <option key={country.id} value={country.id}>{country.name}</option>)}
+          </select>
+          <select disabled={formik.values.WaqfCountryId == undefined ? true : false} value={formik.values.WaqfCityId} className="form-select" aria-label="Default select example">
+            <option selected>Open this select menu</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+        </div>
         <div className="d-flex">
           <select
             className="form-select my-3 ms-3"
             aria-label="Default select example"
+            value={formik.values.WaqfTypeId}
           >
             <option selected value={formik.values.WaqfTypeId}>نوع الوقف</option>
             <option value="1">خيري</option>
@@ -81,6 +116,7 @@ export default function AddWaqf() {
           <select
             className="form-select my-3 me-3"
             aria-label="Default select example"
+            value={formik.values.WaqfActivityId}
           >
             <option selected value={formik.values.WaqfActivityId}>نشاط الوقف</option>
             <option value="1">مسجد/جامع</option>
@@ -93,8 +129,8 @@ export default function AddWaqf() {
         <div className="input-group my-3">
           <span className="input-group-text">وصف الوقف</span>
           <textarea className="form-control" aria-label="With textarea"
-          value={formik.values.WaqfDescription} onChange={formik.handleChange} onBlur={formik.handleBlur}
-          id='waqfDescription'
+            value={formik.values.WaqfDescription} onChange={formik.handleChange} onBlur={formik.handleBlur}
+            id='waqfDescription'
           ></textarea>
         </div>
         {/* <div className="input-group my-3">
@@ -104,7 +140,7 @@ export default function AddWaqf() {
           ></textarea>
         </div> */}
         <div className="mb-3">
-          <label htmlFor="formFileMultiple" class="form-label">
+          <label htmlFor="formFileMultiple" className="form-label">
             ملحقات الوقف
           </label>
           <input
@@ -125,6 +161,6 @@ export default function AddWaqf() {
         </div>
       </div>
     </form>
-    </>
+  </>
   );
 }

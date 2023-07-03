@@ -4,6 +4,10 @@ import AddWaqf from "./components/addWaqf/AddWaqf";
 import Navbar from "./components/Navbar/Navbar";
 import Details from "./components/Details/Details";
 import DashBoard from "./components/DashBoard/DashBoard";
+import Select from "./components/Select";
+import LoginForm from "./components/LoginForm";
+import FormikContainer from "./components/FormikContainer";
+
 class App extends Component {
   render() {
     return (
@@ -14,6 +18,7 @@ class App extends Component {
             <Route path="/AddWaqf" element={<AddWaqf />} />
             <Route path="/" element={<DashBoard />} />
             <Route path="/details" element={<Details />} />
+            <Route path="/LoginForm" element={<FormikContainer />} />
           </Routes>
         </div>
       </BrowserRouter>

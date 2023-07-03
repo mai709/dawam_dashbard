@@ -14,6 +14,9 @@ export default class Navbar extends Component {
             <Link className="navbar-brand red" to="/">
               مراجعة الأوقاف
             </Link>
+            <Link className="navbar-brand red" to="/LoginForm">
+              sel
+            </Link>
             <Link className="navbar-brand" to="/AddWaqf">
               إضافة وقف
             </Link>

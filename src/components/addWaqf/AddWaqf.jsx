@@ -6,25 +6,36 @@ import FormikControl from '../FormikControl';
 
 export default function AddWaqf() {
   const [countries, setCountries] = useState([])
-  const [idCountry, setidCountry] = useState('')
+    const [cities, setCities] = useState([])
+  const [idCountry, setidCountry] = useState(500)
   async function getApi() {
     let { data } = await axios.get(`http://afdinc-001-site5.itempurl.com/api/Country`)
     setCountries(data);
-    // console.log(data)
+  }
+  async function getApiCityies() {
+    let { data } = await axios.get(`http://afdinc-001-site5.itempurl.com/api/City/${idCountry}`)
+    setCities(data);
+  }
+function changeValue(value){
+    setidCountry(value)
   }
   function printValue(event){
     setidCountry(event.target.value)
+    console.log(event.target.value)
   }
   useEffect(() => {
     getApi()
   }, [])
+  useEffect(() => {
+    getApiCityies()
+  }, [idCountry])
   async function apiReq(values) {
 
     // setloading(true);
     let { data } = await axios.post(`http://afdinc-001-site5.itempurl.com/api/Waqf`, values)
       .catch((err) => {
       });
-      console.log(data)
+      // console.log(data)
     if (data.status === 200) {
       console.log('وصلت')
     }
@@ -42,7 +53,7 @@ export default function AddWaqf() {
       EstablishmentDate: "03-02-2000",
       EstablishmentDateH: "01-01-1444",
       WaqfDescription: "",
-      WaqfCountryId: 1,
+      WaqfCountryId: undefined,
       WaqfCityId: 1,
       WaqfTypeId: 1,
       WaqfActivityId: 1,
@@ -51,98 +62,141 @@ export default function AddWaqf() {
       AdminNotes: "",
       InsUserId: 1 //r
   };
+  const WaqfType =[
+    {name:'أهلي' , id:1},
+    {name:'خيري' , id:2},
+  ];
+  const WaqfActivity =[
+    {name:'مسجد' , id:1},
+    {name:'مستشفى' , id:2},
+    {name:'عمارة' , id:3},
+    {name:'منزل طلبة' , id:4},
+    {name:'مدرسة' , id:5},
+    {name:'جامعة' , id:6},
+  ]
   const onSubmit = (values) => {
     console.log("Form data", values);
     apiReq(values)
     // console.log("Saved data", JSON.parse(JSON.stringify(values)));
   };
-  // let formik = useFormik({
-  //   initialValues: {
-  //     WaqfName: "",
-  //     FounderName: "",
-  //     DocumentNumber: 1,
-  //     EstablishmentDate: "03-02-2000",
-  //     EstablishmentDateH: "01-01-1444",
-  //     WaqfDescription: "",
-  //     WaqfCountryId: idCountry,
-  //     WaqfCityId: undefined,
-  //     WaqfTypeId: 1,
-  //     WaqfActivityId: 1,
-  //     WaqfImage: null,
-  //     WaqfDocument: null,
-  //     AdminNotes: "",
-  //     InsUserId: 1
-  //   },
-  //   onSubmit: apiReq,
-  // });
   return (<>
     <Formik
       initialValues={initialValues}
       onSubmit={apiReq}
+      onChange={changeValue}
     >
       {(formik) => (
-        <Form>
-          
-          <FormikControl
-            control="input"
-            type="text"
-            label="اسم الواقف"
-            name="FounderName"
-            className="form-control"
-          />
-          <FormikControl
-            control="input"
-            type="text"
-            label="اسم الوقف"
-            name="WaqfName"
-            className="form-control"
-          />
+        
+        <Form className='my-5 container'>
+          <div className='d-flex'>
+            <div className='w-50 ms-3'>
+              <FormikControl
+              control="input"
+              type="text"
+              label="اسم الواقف"
+              name="FounderName"
+              className="form-control my-2"
+              placeholder='ادخل اسم الواقف'
+            />
+            </div>
+            <div className='w-50'>
+              <FormikControl
+                control="input"
+                type="text"
+                label="اسم الوقف"
+                name="WaqfName"
+                className="form-control my-2"
+                placeholder='ادخل اسم الوقف'
+              />
+            </div>
+          </div>
           <FormikControl
             control="input"
             type="date"
             label='تاريخ الوقف'
             name="EstablishmentDate"
-            className="form-control"
+            className="form-control my-2"
           />
-          {/* <FormikControl
-            control="input"
-            type="file"
-            label='تاريخ الوقف'
-            name="WaqfDocument"
-            className="form-control"
-          />
-          <FormikControl
-            control="input"
-            type="file"
-            label='تاريخ الوقف'
-            name="WaqfImage"
-            className="form-control"
-          />
-          <FormikControl
-            control="textarea"
-            label="وصف الوقف"
-            name="WaqfDescription"
-          /> */}
-          {/* <FormikControl
-            control="select"
-            label="Select a topic"
-            name="anything"
-            options={dropdownOptions}
-          /> */}
-          {/* <FormikControl
-            control="radio"
-            label="Radio topic"
-            name="radioOption"
-            options={radioOptions}
-          />
-          <FormikControl
-            control="checkbox"
-            label="Checkbox topics"
-            name="checkboxOption"
-            options={checkboxOptions}
-          /> */}
+          <div className='d-flex'>
+            <div className='w-50 ms-3'>
+              <FormikControl
+                control="select"
+                label="دولة الوقف"
+                name="WaqfTypeId"
+                className='form-control my-2'
+                options={WaqfType}
+              />
+            </div>
+            <div className='w-50'>
+              <FormikControl
+                control="select"
+                label="مدينة الوقف"
+                name="WaqfActivityId"
+                className='form-control my-2'
+                options={WaqfActivity}
+              />
+            </div>
+          </div>
+          {/* الدولة والمدينة */}
+          <div className='d-flex'>
+            <div className='w-50 ms-3'>
+              <FormikControl
+                control="select"
+                label="دولة الوقف"
+                name="WaqfCountryId"
+                className='form-control my-2'
+                options={countries}
+                onChange={printValue}
+              />
+            </div>
+            <div className='w-50'>
+              <FormikControl
+                control="select"
+                label="مدينة الوقف"
+                name="anything"
+                disabled={idCountry ===500?true:false}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                className='form-control my-2'
+                options={cities}
+              />
+            </div>
+          </div>
+          <div className=''>
+              <FormikControl
+                control="textarea"
+                type="text"
+                label="وصف الوقف"
+                name="WaqfDescription"
+                className="form-control my-2"
+                placeholder='صف الوقف'
+              />
+            </div>
+            <div className=''>
+              <FormikControl
+                control="textarea"
+                type="text"
+                label="ملاحظات"
+                name="WaqfDescription"
+                className="form-control my-2"
+                placeholder='اكتب ملاحظات عن الوقف'
+
+              />
+            </div>
+          <div className='d-flex'>
+            <div className='w-50 ms-3'>
+              <label htmlFor="WaqfDocument" className="form-label">مستند للوقف</label>
+              <input className="form-control my-2" name='WaqfDocument' type="file" id="WaqfDocument" onChange={formik.handleChange} onBlur={formik.handleBlur}></input>
+            </div>
+            <div className='w-50'>
+              <label htmlFor="WaqfImage" className="form-label">صورة الوقف</label>
+              <input className="form-control my-2" name='WaqfImage' type="file" id="WaqfImage" onChange={formik.handleChange} onBlur={formik.handleBlur}></input>
+            </div>
+          </div>
           <FormikControl control="date" label="Pick a date" name="birthDate" />
-          <button type="submit">Submit</button>
+          <div className='text-start'>
+            <button type="submit" className='btn btn-success btn-lg px-5 py-2 fs-3 my-3'>حفظ</button>
+          </div>
         </Form>
       )}
     </Formik>

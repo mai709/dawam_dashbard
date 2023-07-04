@@ -9,15 +9,14 @@ function Select(props) {
       {/* <div>{console.log(props)}</div> */}
       <label htmlFor={name}>{label}</label>
       <Field as="select" id={name} name={name} {...rest}>
-        {options.map((option, index) => {
+        {options.map((option) => {
           return (
-            <option key={index} value={option.id}>
+            <option key={option.id} value={option.value}>
               {option.name}
             </option>
           );
         })}
       </Field>
-
       <ErrorMessage component={TextError} name={name} />
     </>
   );

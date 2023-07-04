@@ -1,10 +1,10 @@
-.item--bg-wait{
+.item--bg-Pending{
     background-color: #fff3cd;
 }
-.item--bg-done {
+.item--bg-Approved {
     background-color: #d1e7dd;
 }
-.item--bg-reject{
+.item--bg-Declined{
     background-color: #f8d7da;
 }
 .list-group .list-group-item div{
@@ -32,4 +32,7 @@ border-left: 1px solid rgba(0 , 0  , 0, 0.13);
 .btn--view:hover{
     background-color: rgb(32, 96, 106);
         color: white;
+}
+.list-group-item >div{
+    min-width: 200px;
 }

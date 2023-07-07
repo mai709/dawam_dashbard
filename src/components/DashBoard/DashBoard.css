@@ -36,3 +36,10 @@ border-left: 1px solid rgba(0 , 0  , 0, 0.13);
 .list-group-item >div{
     min-width: 200px;
 }
+.loading{
+    height: 90vh
+}
+.loading .spinner-border{
+    width: 150px;
+    height: 150px;
+}

@@ -14,21 +14,21 @@ export default function DashBoard() {
   }, []);
   return (
     <>
-    <ul className="list-group container">
+    {dashBoardApi?<ul className="list-group container mb-5">
       {dashBoardApi.map((item)=>
         <li
       key={item.id}
-      className= {`list-group-item d-flex justify-content-between py-0 item--bg-${item.waqfStatus}`}
+      className= {`list-group-item d-md-flex justify-content-between py-0 item--bg-${item.waqfStatus}`}
     >
-      <div className="py-2 d-flex align-items-center justify-content-center">
+      <div className="py-2 d-md-flex align-items-center justify-content-center">
         <a className="btn">
           {item.waqfName}
         </a>
       </div>
-      <div className="py-2 d-flex align-items-center justify-content-center">
+      <div className="py-2 d-md-flex align-items-center justify-content-center">
         {item.establishmentDate}
       </div>
-      <div className="py-2 d-flex align-items-center justify-content-center">
+      <div className="py-2 d-md-flex align-items-center justify-content-center">
         {item.waqfStatus}
       </div>
       <div className="py-2">
@@ -48,7 +48,15 @@ export default function DashBoard() {
       </div>
       </li>
       )}
-    </ul>
+    </ul>:
+    <div className="container">
+      <div className="d-md-flex align-items-center justify-content-center loading">
+              <div className="spinner-border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+        </div>
+    </div>
+      }
     </>
   );
 }

@@ -6,36 +6,46 @@ import FormikControl from '../FormikControl';
 
 export default function AddWaqf() {
   const [countries, setCountries] = useState([])
-    const [cities, setCities] = useState([])
+    const [cities, setCities] = useState(['اختر مدينة'])
+      const [cityId, setcityId] = useState('')
+
   const [idCountry, setidCountry] = useState(500)
   async function getApi() {
     let { data } = await axios.get(`http://afdinc-001-site5.itempurl.com/api/Country`)
     setCountries(data);
   }
-  async function getApiCityies() {
-    let { data } = await axios.get(`http://afdinc-001-site5.itempurl.com/api/City/${idCountry}`)
+  async function getApiCityies(id) {
+    let { data } = await axios.get(`http://afdinc-001-site5.itempurl.com/api/City/${id}`)
     setCities(data);
   }
 function changeValue(value){
     setidCountry(value)
+
   }
+  // useEffect(()=>{
+  //   console.log('hello')
+  // },[idCountry])
   function printValue(event){
     setidCountry(event.target.value)
     console.log(event.target.value)
+    
+  }
+  function changeCity(event){
+    setcityId(event.target.value)
   }
   useEffect(() => {
     getApi()
   }, [])
   useEffect(() => {
-    getApiCityies()
+    getApiCityies(idCountry)
   }, [idCountry])
   async function apiReq(values) {
 
-    // setloading(true);
+    // setloading(true);getApiCityies
     let { data } = await axios.post(`http://afdinc-001-site5.itempurl.com/api/Waqf`, values)
       .catch((err) => {
       });
-      // console.log(data)
+      console.log(values)
     if (data.status === 200) {
       console.log('وصلت')
     }
@@ -53,8 +63,8 @@ function changeValue(value){
       EstablishmentDate: "03-02-2000",
       EstablishmentDateH: "01-01-1444",
       WaqfDescription: "",
-      WaqfCountryId: undefined,
-      WaqfCityId: 1,
+      WaqfCountryId: idCountry,
+      WaqfCityId: cityId,
       WaqfTypeId: 1,
       WaqfActivityId: 1,
       WaqfImage: null,
@@ -146,18 +156,19 @@ function changeValue(value){
                 name="WaqfCountryId"
                 className='form-control my-2'
                 options={countries}
-                onChange={printValue}
+                onChange={formik.handleChange}
+                onClick={printValue}
               />
             </div>
             <div className='w-50'>
               <FormikControl
                 control="select"
-                label="مدينة الوقف"
-                name="anything"
-                disabled={idCountry ===500?true:false}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
+                label="دولة الوقف"
+                name="WaqfCityId"
                 className='form-control my-2'
+                                onChange={formik.handleChange}
+
+                onClick={changeCity}
                 options={cities}
               />
             </div>

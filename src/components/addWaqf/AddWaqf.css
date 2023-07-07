@@ -22,5 +22,4 @@
     .form-control:focus~label {
             transform: scale(.85) translateY(-0.5rem) translateX(7rem) !important;
         }
-        
 }
